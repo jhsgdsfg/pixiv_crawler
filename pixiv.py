@@ -3,6 +3,7 @@ from typing import Mapping
 
 import httpx
 from loguru import logger
+from tqdm import tqdm
 
 from settings import PROXY, COOKIES, INDEX_URL, INDEX_HEADERS, IMAGE_HEADERS
 
@@ -30,7 +31,8 @@ def scrape_index():
 def parse_index(res: httpx.Response):
     res = res.json()
     illusts = res['body']['thumbnails']['illust']
-    logger.info(f'Found {len(illusts)} images...')
+    total = len(illusts)
+    logger.info(f'Found {total} images...')
     titles = [ illust['title'] for illust in illusts ]
     authors = [ illust['userName'] for illust in illusts ]
     urls = [ illust['url'] for illust in illusts ]
@@ -50,7 +52,7 @@ def save_image(image: Image):
 def main():
     res = scrape_index()
     images = parse_index(res)
-    for image in images:
+    for image in tqdm(images):
         image = scrape_image(image)
         save_image(image)
         time.sleep(1)
