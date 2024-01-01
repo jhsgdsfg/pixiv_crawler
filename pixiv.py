@@ -18,6 +18,7 @@ class Image(object):
         self.url = url
         self.content = None
 
+
 def scrape(url: str, headers: Mapping):
     global CLIENT
     res = CLIENT.get(url, headers=headers)
