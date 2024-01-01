@@ -2,11 +2,11 @@ import os, time, json
 
 from playwright.sync_api import sync_playwright
 
-from settings import PROXY
+PROXY = 'http://127.0.0.1:1081'
 
 LOGIN_URL = r'https://accounts.pixiv.net/login?return_to=https%3A%2F%2Fwww.pixiv.net%2F&lang=zh&source=pc&view_type=page'
 
-def login_for_cookies():
+def login_for_cookies() -> dict:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         context = browser.new_context(proxy={'server': PROXY})
@@ -25,7 +25,7 @@ def login_for_cookies():
         time.sleep(2)
         button_e.click()
 
-        page.wait_for_selector('.root')
+        page.wait_for_selector('#root')
         cookies = {}
         for cookie in context.cookies():
             cookies[cookie['name']] = cookie['value']
@@ -34,10 +34,11 @@ def login_for_cookies():
         browser.close()
         return cookies
     
-def save_cookies():
-    cookies = login_for_cookies()
+def save_and_return_cookies() -> dict:
+    cookies: dict = login_for_cookies()
     with open('cookies.json', 'w') as f:
         json.dump(cookies, f)
+    return cookies
 
 if __name__ == '__main__':
-    save_cookies()
+    save_and_return_cookies()
