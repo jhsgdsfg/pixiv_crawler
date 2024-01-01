@@ -1,4 +1,4 @@
-import os, time
+import os, time, json
 
 from playwright.sync_api import sync_playwright
 
@@ -22,6 +22,7 @@ def login_for_cookies():
         time.sleep(1)
         username_e.fill(os.environ['GMAIL_ADDRESS'])
         password_e.fill(os.environ['DEFAULT_PW'])
+        time.sleep(2)
         button_e.click()
 
         page.wait_for_selector('.root')
@@ -32,3 +33,11 @@ def login_for_cookies():
         context.close()
         browser.close()
         return cookies
+    
+def save_cookies():
+    cookies = login_for_cookies()
+    with open('cookies.json', 'w') as f:
+        json.dump(cookies, f)
+
+if __name__ == '__main__':
+    save_cookies()
