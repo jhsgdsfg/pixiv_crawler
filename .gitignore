@@ -1,0 +1,5 @@
+.DS_Store
+example.py
+__pycache__/
+venv/
+pixiv_images/
