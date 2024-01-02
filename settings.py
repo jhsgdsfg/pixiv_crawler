@@ -1,8 +1,6 @@
-import re
-
 PROXY: str = 'http://127.0.0.1:1081'
 
-USER_ID: int = 89218870
+USER_ID: int = 44898022
 X_USER_ID: str = '71413581'
 
 BASE_URL: str = 'https://www.pixiv.net'

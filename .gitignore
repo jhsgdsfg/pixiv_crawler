@@ -4,3 +4,4 @@ __pycache__/
 venv/
 pixiv_images/
 cookies.json
+record.json
